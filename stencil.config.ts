@@ -1,8 +1,8 @@
 import { Config } from '@stencil/core';
 
 export const config: Config = {
-    namespace:     'stencil-context',
-    outputTargets: [
+    namespace:         'stencil-context',
+    outputTargets:     [
         {
             type:          'dist',
             esmLoaderPath: '../loader',
@@ -18,5 +18,6 @@ export const config: Config = {
             serviceWorker: null, // disable service workers
         },
     ],
-    globalScript:  'src/initialize-context.ts',
+    globalScript:      'src/global.ts',
+    excludeComponents: ['consume-example', 'provide-example'],
 };

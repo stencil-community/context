@@ -1,17 +1,17 @@
-import { createContext } from '@lit/context';
 import {
     Component,
     State,
     Host,
     h,
     ComponentInterface,
-}                        from '@stencil/core';
-import { Consume } from '../context/decorator/consume';
+}                         from '@stencil/core';
+import { Consume }        from '../context/decorator/consume';
+import { consumeContext } from '../context/functions/consume-context';
 import {
     ErrorLogger,
     logger,
     Logger,
-} from './logger';
+}                         from './logger';
 
 @Component({
     tag:    'consume-example',
@@ -20,15 +20,21 @@ import {
 export class ConsumeExample implements ComponentInterface {
 
     @State()
-    @Consume(createContext('error_logger'))
+    @Consume('error_logger')
     private errorLogger!: ErrorLogger;
-    
-    @Consume(logger)
-    private logger!: Logger
+
+    @Consume(logger, {
+        unprovided: 'wait',
+    })
+    private logger!: Logger;
 
     private handleClick = (): void => {
         this.errorLogger.error('Button clicked');
         this.logger.log('Clicked');
+
+        consumeContext<ErrorLogger>('error_logger').then((logger: ErrorLogger) => {
+            logger.error('From global consume-context');
+        });
     }
 
     public render(): any {

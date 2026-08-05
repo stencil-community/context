@@ -11,26 +11,10 @@
   </head>
   <body>
       <script type="module">
-          provideContext(createContext('error_logger'), { error: (value) => console.log(`[ERR] ${value}`)  });
+          provideContext('error_logger', { error: (value) => console.log(`[ERR] ${value}`)  });
       </script>
       <provide-example section="Foo">
-          <div>
-              <consume-example></consume-example>
-
-              <provide-example section="Bar">
-                  <div>
-                      <consume-example>
-
-                          <provide-example section="Baz">
-                              <div>
-                                  <consume-example></consume-example>
-                              </div>
-                          </provide-example>
-                          
-                      </consume-example>
-                  </div>
-              </provide-example>
-          </div>
+          <consume-example></consume-example>
       </provide-example>
   </body>
 </html>

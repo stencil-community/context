@@ -38,18 +38,18 @@ export function Provide<ValueType>(context: Context<unknown, ValueType> | string
         let provider: WeakMap<ComponentInterface, ContextProvider<Context<unknown, ValueType>>> = new WeakMap();
 
         cmp.connectedCallback = function (): void {
-            if (connectedCallback) {
-                connectedCallback.call(this);
-            }
-
             if (!provider.has(this)) {
                 provider.set(this, new ContextProvider(getElement(this), {
                     context:      'string' === typeof context ? createContext(context) : context,
                     initialValue: this[property],
                 }));
             }
-
+            
             provider.get(this)?.hostConnected();
+
+            if (connectedCallback) {
+                connectedCallback.call(this);
+            }
         }
 
         cmp.disconnectedCallback = function (): void {

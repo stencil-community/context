@@ -5,8 +5,8 @@ import {
     h,
     ComponentInterface,
 }                         from '@stencil/core';
-import { Consume }        from '../context/decorator/consume';
-import { consumeContext } from '../context/functions/consume-context';
+import { Consume }        from '../../context/decorator/consume';
+import { consumeContext } from '../../context/functions/consume-context';
 import {
     ErrorLogger,
     logger,

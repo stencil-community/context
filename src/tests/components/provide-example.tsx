@@ -5,7 +5,7 @@ import {
     ComponentInterface,
     Prop,
 }                  from '@stencil/core';
-import { Provide } from '../context/decorator/provide';
+import { Provide } from '../../context/decorator/provide';
 import {
     Logger,
     logger,
@@ -27,7 +27,6 @@ export class ProvideExample implements ComponentInterface {
     }
 
     @Provide(logger)
-    // @ts-ignore
     private readonly _logger: Logger = new Logger();
 
     public render(): any {

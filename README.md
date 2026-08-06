@@ -101,7 +101,7 @@ For consumer, two options are provided:
 
 ```tsx
 import { Component, ComponentInterface, FunctionalComponent, h } from '@stencil/core';
-import { Provide, Consume } from '@runopencode/context-protocol';
+import { Provide, Consume } from '@runopencode/stencil-context';
 
 export class Logger {
     public log(value: string): void {

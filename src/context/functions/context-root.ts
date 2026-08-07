@@ -25,7 +25,7 @@ export function createContextRoot(target: HTMLElement | string | null = null): v
  * @param {HTMLElement|string|null} target The target element or selector which is used as context root. If not provided `document.documentElement` will be used, that is, `<html>` HTML element.
  */
 export function removeContextRoot(target: HTMLElement | string | null = null): void {
-    let element: HTMLElement = findElement(target, globalThis.document.body);
+    let element: HTMLElement = findElement(target, globalThis.document.documentElement);
 
     roots?.get(element)?.destroy();
     roots?.delete(element);

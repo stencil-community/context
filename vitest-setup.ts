@@ -1,3 +1,3 @@
-await import('./dist/esm/index.js');
+await import('./dist/stencil-context/index.esm.js');
 
 export {};

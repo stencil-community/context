@@ -18,7 +18,7 @@ import { findElement } from './internal';
  *
  * @return {Promise} Resolved promise if context is found, or rejected, if requested context does not exist on ancestor elements.
  */
-export function consumeContext<ValueType>(
+export async function consumeContext<ValueType>(
     context: Context<unknown, ValueType> | string,
     target: HTMLElement | string | null = null,
 ): Promise<ValueType> {

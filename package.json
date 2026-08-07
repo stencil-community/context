@@ -22,7 +22,7 @@
     "scripts": {
         "build": "stencil build --docs",
         "start": "stencil build --dev --watch --serve",
-        "test": "stencil-test",
+        "test": "stencil-test --coverage" ,
         "test:watch": "stencil-test --watch",
         "test:e2e": "stencil-test --project browser",
         "test:spec": "stencil-test --project spec"
@@ -32,10 +32,12 @@
         "@stencil/core": "^4.0"
     },
     "devDependencies": {
+        "@stencil/mock-doc": "^5.0.0-alpha.28",
         "@stencil/vitest": "^1.14.0",
         "@types/jest": "^29.5.14",
         "@types/node": "^22.13.5",
         "@vitest/browser-playwright": "^4.1.10",
+        "@vitest/coverage-v8": "^4.1.10",
         "jest": "^29.7.0",
         "jest-cli": "^29.7.0",
         "puppeteer": "^24.3.0",

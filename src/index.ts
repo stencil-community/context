@@ -1,4 +1,8 @@
-import { createContext } from '@lit/context';
+import {
+    createContext,
+    Context,
+    ContextType,
+} from '@lit/context';
 
 export * from './context/decorator/provide';
 export * from './context/decorator/consume';
@@ -8,4 +12,8 @@ export * from './context/functions/context-root';
 export * from './context/utils/deferred';
 
 // Re-export.
-export { createContext };
+export {
+    createContext,
+    Context,
+    ContextType,
+};

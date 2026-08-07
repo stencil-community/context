@@ -14,6 +14,10 @@ export class ContextRoot {
         this._root.addEventListener('context-provider', this._onContextProvider);
     }
 
+    public static create(root: HTMLElement): ContextRoot {
+        return new ContextRoot(root);
+    }
+    
     public destroy(): void {
         this._pending.clear();
         this._root.removeEventListener('context-request', this._onContextRequest);

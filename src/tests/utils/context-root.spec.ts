@@ -39,13 +39,11 @@ describe('ContextRoot', (): void => {
             ContextRoot.create(root);
         });
 
-        test('It will provide context to consumer as soon provider is registered.', async (): Promise<void> => {
+        test('It will provide context to consumer as soon provider is registered.', (): void => {
 
             consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
                 // noop.
             }, true));
-
-            await Promise.resolve();
 
             expect(provided.length).toStrictEqual(0);
 
@@ -55,8 +53,6 @@ describe('ContextRoot', (): void => {
 
             provider.dispatchEvent(new ContextProviderEvent(context, provider))
 
-            await Promise.resolve();
-
             expect(provided.length).toStrictEqual(1);
             expect(provided[0]).toBeInstanceOf(ContextConsumerEvent);
             expect(provided[0].target).toStrictEqual(consumer);
@@ -64,22 +60,18 @@ describe('ContextRoot', (): void => {
             expect((provided[0] as ContextConsumerEvent<Context<unknown, unknown>>).subscribe).toStrictEqual(true);
         });
 
-        test('It will provide context to consumer only once for same context and callback resolving first unsettled request', async (): Promise<void> => {
+        test('It will provide context to consumer only once for same context and callback resolving first unsettled request', (): void => {
             let callback: () => void = (): void => {
             };
 
             consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, callback, false));
             consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, callback, true));
 
-            await Promise.resolve();
-
             provider.addEventListener('context-request', (event: Event): void => {
                 provided.push(event);
             });
 
             provider.dispatchEvent(new ContextProviderEvent(context, provider))
-
-            await Promise.resolve();
 
             expect(provided.length).toStrictEqual(1);
             expect(provided[0]).toBeInstanceOf(ContextConsumerEvent);
@@ -88,21 +80,17 @@ describe('ContextRoot', (): void => {
             expect((provided[0] as ContextConsumerEvent<Context<unknown, unknown>>).subscribe).toStrictEqual(false);
         });
 
-        test('It will provide context to consumer for each callback', async (): Promise<void> => {
+        test('It will provide context to consumer for each callback', (): void => {
             consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
             }, false));
             consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
             }, true));
-
-            await Promise.resolve();
 
             provider.addEventListener('context-request', (event: Event): void => {
                 provided.push(event);
             });
 
             provider.dispatchEvent(new ContextProviderEvent(context, provider))
-
-            await Promise.resolve();
 
             expect(provided.length).toStrictEqual(2);
         });
@@ -111,7 +99,7 @@ describe('ContextRoot', (): void => {
 
     describe('Context request remains unsettled.', (): void => {
 
-        test('It does not provide context to sibling consumer.', async (): Promise<void> => {
+        test('It does not provide context to sibling consumer.', (): void => {
             let document: Document              = createDocument(`
                 <div id='root'>
                     <div id='provider'></div>
@@ -130,20 +118,16 @@ describe('ContextRoot', (): void => {
                 // noop.
             }, true));
 
-            await Promise.resolve();
-
             provider.addEventListener('context-request', (event: Event): void => {
                 provided.push(event);
             });
 
             provider.dispatchEvent(new ContextProviderEvent(context, provider))
 
-            await Promise.resolve();
-
             expect(provided.length).toStrictEqual(0);
         });
 
-        test('It does not provide wrong context.', async (): Promise<void> => {
+        test('It does not provide wrong context.', (): void => {
             let document: Document    = createDocument(`
                 <div id='root'>
                     <div id='provider'>
@@ -162,20 +146,16 @@ describe('ContextRoot', (): void => {
                 // noop.
             }, true));
 
-            await Promise.resolve();
-
             provider.addEventListener('context-request', (event: Event): void => {
                 provided.push(event);
             });
 
             provider.dispatchEvent(new ContextProviderEvent(createContext('bar'), provider))
 
-            await Promise.resolve();
-
             expect(provided.length).toStrictEqual(0);
         });
 
-        test('It does not provide context when destroyed.', async (): Promise<void> => {
+        test('It does not provide context when destroyed.', (): void => {
             let document: Document              = createDocument(`
                 <div id='root'>
                     <div id='provider'>
@@ -194,8 +174,6 @@ describe('ContextRoot', (): void => {
                 // noop.
             }, true));
 
-            await Promise.resolve();
-            
             contextRoot.destroy();
 
             provider.addEventListener('context-request', (event: Event): void => {
@@ -203,8 +181,6 @@ describe('ContextRoot', (): void => {
             });
 
             provider.dispatchEvent(new ContextProviderEvent(context, provider))
-
-            await Promise.resolve();
 
             expect(provided.length).toStrictEqual(0);
         });

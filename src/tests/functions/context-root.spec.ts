@@ -46,39 +46,29 @@ describe('createContextRoot() and removeContextRoot()', (): void => {
         vi.unstubAllGlobals();
     });
     
-    test('It will create context root only once.', async (): Promise<void> => {
+    test('It will create context root only once.', (): void => {
         createContextRoot();
         createContextRoot();
 
         consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }, true));
-
-        await Promise.resolve();
         
         provideContext(context, 'bar', provider);
-
-        await Promise.resolve();
         
         expect(collected).toStrictEqual(['bar']);
     });
     
-    test('It will destroy context root', async (): Promise<void> => {
+    test('It will destroy context root', (): void => {
         createContextRoot();
 
         consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }, true));
 
-        await Promise.resolve();
-
         removeContextRoot();
 
-        await Promise.resolve();
-
         provideContext(context, 'bar', provider);
-
-        await Promise.resolve();
 
         expect(collected.length).toStrictEqual(0);
     });

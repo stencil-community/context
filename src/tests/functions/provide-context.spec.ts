@@ -39,7 +39,7 @@ describe('provideContext()', (): void => {
         vi.unstubAllGlobals();
     });
 
-    test('It will provide context to the provider element by query selector.', async (): Promise<void> => {
+    test('It will provide context to the provider element by query selector.', (): void => {
         let consumer: HTMLElement = document.querySelector('#consumer') as HTMLElement;
         let unsettled: HTMLElement = document.querySelector('#unsettled') as HTMLElement;
         
@@ -53,12 +53,10 @@ describe('provideContext()', (): void => {
             collected.push(value);
         }))
 
-        await Promise.resolve();
-
         expect(collected).toStrictEqual(['bar']);
     });
 
-    test('It will provide context to the document.', async (): Promise<void> => {
+    test('It will provide context to the document.', (): void => {
         let consumer: HTMLElement = document.querySelector('#consumer') as HTMLElement;
         let unsettled: HTMLElement = document.querySelector('#unsettled') as HTMLElement;
 
@@ -72,12 +70,10 @@ describe('provideContext()', (): void => {
             collected.push(value);
         }))
 
-        await Promise.resolve();
-
         expect(collected).toStrictEqual(['bar', 'bar']);
     });
     
-    test('It will provide context to the given element.', async (): Promise<void> => {
+    test('It will provide context to the given element.', (): void => {
         let consumer: HTMLElement = document.querySelector('#consumer') as HTMLElement;
         
         provideContext(context, 'bar', document.querySelector('#provider') as HTMLElement);
@@ -86,12 +82,10 @@ describe('provideContext()', (): void => {
             collected.push(value);
         }));
 
-        await Promise.resolve();
-
         expect(collected).toStrictEqual(['bar']);
     });
     
-    test('It targets element correctly.', async (): Promise<void> => {
+    test('It targets element correctly.', (): void => {
         let unsettled: HTMLElement = document.querySelector('#unsettled') as HTMLElement;
 
         provideContext(context, 'bar', '#provider');
@@ -99,13 +93,11 @@ describe('provideContext()', (): void => {
         unsettled.dispatchEvent(new ContextConsumerEvent(context, unsettled, (value: string): void => {
             collected.push(value);
         }));
-        
-        await Promise.resolve();
 
         expect(collected.length).toStrictEqual(0);
     });
 
-    test('It updates same context with new value element correctly.', async (): Promise<void> => {
+    test('It updates same context with new value element correctly.', (): void => {
         let consumer: HTMLElement = document.querySelector('#consumer') as HTMLElement;
 
         provideContext(context, 'bar', '#provider');
@@ -114,18 +106,14 @@ describe('provideContext()', (): void => {
             collected.push(value);
         }, true));
 
-        await Promise.resolve();
-
         expect(collected).toStrictEqual(['bar']);
         
         provideContext(context, 'baz', '#provider');
         
-        await Promise.resolve();
-        
         expect(collected).toStrictEqual(['bar', 'baz']);
     });
     
-    test('It throws exception when element could not be found', async (): Promise<void> => {
+    test('It throws exception when element could not be found', (): void => {
         expect((): void => provideContext(context, 'bar', '#nonexistent'))
             .toThrow(`Element could not be found using selector "#nonexistent".`);
     });

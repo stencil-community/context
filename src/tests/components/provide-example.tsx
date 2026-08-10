@@ -7,8 +7,8 @@ import {
 }                  from '@stencil/core';
 import { Provide } from '../../context/decorator/provide';
 import {
-    Logger,
-    logger,
+    DebugLogger,
+    DEBUG_LOGGER,
 }                  from './logger';
 
 @Component({
@@ -26,8 +26,8 @@ export class ProvideExample implements ComponentInterface {
         this._logger.section = value;
     }
 
-    @Provide(logger)
-    private readonly _logger: Logger = new Logger();
+    @Provide(DEBUG_LOGGER)
+    private readonly _logger: DebugLogger = new DebugLogger();
 
     public render(): any {
         return (

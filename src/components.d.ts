@@ -5,8 +5,12 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { DebugLogger, ErrorLogger } from "./tests/components/logger";
+export { DebugLogger, ErrorLogger } from "./tests/components/logger";
 export namespace Components {
     interface ConsumeExample {
+        "getDebugLogger": () => Promise<DebugLogger>;
+        "getErrorLogger": () => Promise<ErrorLogger>;
     }
     interface ProvideExample {
         "section": string;

@@ -15,7 +15,7 @@ import { ConsumeDecorator } from './types';
  */
 export type ConsumeOptions = {
     /**
-     * Should property be updated as value of context provided changes?
+     * Should property be updated as value of context provided changes? False by default.
      */
     subscribe?: boolean;
     /**

@@ -42,7 +42,7 @@ describe('ContextConsumer', (): void => {
         vi.unstubAllGlobals();
     });
 
-    test('It will consume context once.', async (): Promise<void> => {
+    test('It will consume context once.', (): void => {
         provideContext(context, 'bar');
         
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {
@@ -66,7 +66,7 @@ describe('ContextConsumer', (): void => {
         expect(controller.value).toStrictEqual('bar');
     });
 
-    test('It will subscribe to context value change.', async (): Promise<void> => {
+    test('It will subscribe to context value change.', (): void => {
         provideContext(context, 'bar');
 
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {
@@ -90,7 +90,7 @@ describe('ContextConsumer', (): void => {
         expect(controller.value).toStrictEqual('baz');
     });
 
-    test('It will unsubscribe from context.', async (): Promise<void> => {
+    test('It will unsubscribe from context.', (): void => {
         provideContext(context, 'bar');
 
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {
@@ -116,7 +116,7 @@ describe('ContextConsumer', (): void => {
         expect(controller.value).toStrictEqual('bar');
     });
 
-    test('It will change provider.', async (): Promise<void> => {
+    test('It will change provider.', (): void => {
         provideContext(context, 'bar');
 
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {

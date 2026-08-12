@@ -5,7 +5,7 @@ import {
     ComponentInterface,
     Prop,
 }                  from '@stencil/core';
-import { Provide } from '../../context/decorator/provide';
+import { Provide } from '../../';
 import {
     DebugLogger,
     DEBUG_LOGGER,

@@ -1,8 +1,8 @@
 import {
     Context,
-    ContextEvent,
+    ContextRequestEvent,
     createContext,
-}                      from '@lit/context';
+}                      from '../context';
 import { Deferred }    from '../utils/deferred';
 import { findElement } from './internal';
 
@@ -25,7 +25,7 @@ export async function consumeContext<ValueType>(
     let element: HTMLElement          = findElement(target, globalThis.document.body);
     let deferred: Deferred<ValueType> = new Deferred<ValueType>();
 
-    element.dispatchEvent(new ContextEvent<Context<unknown, ValueType>>(
+    element.dispatchEvent(new ContextRequestEvent<Context<unknown, ValueType>>(
         'string' === typeof context ? createContext(context) : context,
         element,
         (value: ValueType): void => {

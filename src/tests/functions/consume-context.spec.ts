@@ -1,7 +1,9 @@
 import {
     Context,
     createContext,
-}                         from '@lit/context';
+    consumeContext,
+    provideContext,
+}                         from '../../';
 import { createDocument } from '@stencil/mock-doc';
 import {
     afterEach,
@@ -13,9 +15,6 @@ import {
     expect,
     test,
 }                         from 'vitest';
-import { consumeContext } from '../../context/functions/consume-context';
-
-import { provideContext } from '../../context/functions/provide-context';
 
 describe('createContextRoot() and removeContextRoot()', (): void => {
 

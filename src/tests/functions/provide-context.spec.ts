@@ -1,8 +1,9 @@
 import {
     Context,
     createContext,
-    ContextEvent as ContextConsumerEvent,
-}                         from '@lit/context';
+    ContextRequestEvent,
+    provideContext,
+}                         from '../../';
 import { createDocument } from '@stencil/mock-doc';
 import {
     beforeEach,
@@ -14,7 +15,6 @@ import {
     describe,
     test,
 }                         from 'vitest';
-import { provideContext } from '../../context/functions/provide-context';
 
 describe('provideContext()', (): void => {
 
@@ -27,7 +27,7 @@ describe('provideContext()', (): void => {
             <div id='provider'>
                 <div id='consumer'></div>
             </div>
-            <div id="unsettled"></div>
+            <div id='unsettled'></div>
         `);
         context   = createContext('foo');
         collected = [];
@@ -40,16 +40,16 @@ describe('provideContext()', (): void => {
     });
 
     test('It will provide context to the provider element by query selector.', (): void => {
-        let consumer: HTMLElement = document.querySelector('#consumer') as HTMLElement;
+        let consumer: HTMLElement  = document.querySelector('#consumer') as HTMLElement;
         let unsettled: HTMLElement = document.querySelector('#unsettled') as HTMLElement;
-        
+
         provideContext(context, 'bar', '#provider');
-        
-        consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+
+        consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }));
-        
-        unsettled.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+
+        unsettled.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }))
 
@@ -57,40 +57,40 @@ describe('provideContext()', (): void => {
     });
 
     test('It will provide context to the document.', (): void => {
-        let consumer: HTMLElement = document.querySelector('#consumer') as HTMLElement;
+        let consumer: HTMLElement  = document.querySelector('#consumer') as HTMLElement;
         let unsettled: HTMLElement = document.querySelector('#unsettled') as HTMLElement;
 
         provideContext(context, 'bar');
 
-        consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+        consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }));
 
-        unsettled.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+        unsettled.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }))
 
         expect(collected).toStrictEqual(['bar', 'bar']);
     });
-    
+
     test('It will provide context to the given element.', (): void => {
         let consumer: HTMLElement = document.querySelector('#consumer') as HTMLElement;
-        
+
         provideContext(context, 'bar', document.querySelector('#provider') as HTMLElement);
-        
-        consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+
+        consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }));
 
         expect(collected).toStrictEqual(['bar']);
     });
-    
+
     test('It targets element correctly.', (): void => {
         let unsettled: HTMLElement = document.querySelector('#unsettled') as HTMLElement;
 
         provideContext(context, 'bar', '#provider');
 
-        unsettled.dispatchEvent(new ContextConsumerEvent(context, unsettled, (value: string): void => {
+        unsettled.dispatchEvent(new ContextRequestEvent(context, unsettled, (value: string): void => {
             collected.push(value);
         }));
 
@@ -102,17 +102,17 @@ describe('provideContext()', (): void => {
 
         provideContext(context, 'bar', '#provider');
 
-        consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+        consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }, true));
 
         expect(collected).toStrictEqual(['bar']);
-        
+
         provideContext(context, 'baz', '#provider');
-        
+
         expect(collected).toStrictEqual(['bar', 'baz']);
     });
-    
+
     test('It throws exception when element could not be found', (): void => {
         expect((): void => provideContext(context, 'bar', '#nonexistent'))
             .toThrow(`Element could not be found using selector "#nonexistent".`);

@@ -1,24 +1,22 @@
 import {
     Context,
-    ContextEvent as ContextConsumerEvent,
+    ContextRequestEvent,
     createContext,
-} from '@lit/context';
-import { createDocument }    from '@stencil/mock-doc';
+    createContextRoot,
+    removeContextRoot,
+    provideContext,
+}                         from '../../';
+import { createDocument } from '@stencil/mock-doc';
 import {
     afterEach,
     beforeEach,
     vi,
-} from '@stencil/vitest';
+}                         from '@stencil/vitest';
 import {
     describe,
     expect,
     test,
 }                         from 'vitest';
-import {
-    createContextRoot,
-    removeContextRoot,
-} from '../../context/functions/context-root';
-import { provideContext } from '../../context/functions/provide-context';
 
 describe('createContextRoot() and removeContextRoot()', (): void => {
 
@@ -35,8 +33,8 @@ describe('createContextRoot() and removeContextRoot()', (): void => {
             </div>
         `);
         context   = createContext('foo');
-        consumer = document.querySelector('#consumer') as HTMLElement;
-        provider = document.querySelector('#provider') as HTMLElement;
+        consumer  = document.querySelector('#consumer') as HTMLElement;
+        provider  = document.querySelector('#provider') as HTMLElement;
         collected = [];
 
         vi.stubGlobal('document', document);
@@ -45,24 +43,24 @@ describe('createContextRoot() and removeContextRoot()', (): void => {
     afterEach((): void => {
         vi.unstubAllGlobals();
     });
-    
+
     test('It will create context root only once.', (): void => {
         createContextRoot();
         createContextRoot();
 
-        consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+        consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }, true));
-        
+
         provideContext(context, 'bar', provider);
-        
+
         expect(collected).toStrictEqual(['bar']);
     });
-    
+
     test('It will destroy context root', (): void => {
         createContextRoot();
 
-        consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (value: string): void => {
+        consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (value: string): void => {
             collected.push(value);
         }, true));
 

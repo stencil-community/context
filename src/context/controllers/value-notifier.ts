@@ -1,4 +1,4 @@
-import { ContextCallback } from '@lit/context';
+import { ContextCallback } from '../context';
 
 type Disposer = () => void;
 

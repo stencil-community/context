@@ -1,7 +1,7 @@
 import {
     Context,
     createContext,
-} from '@lit/context';
+} from '../../';
 
 export class DebugLogger {
 

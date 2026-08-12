@@ -4,11 +4,8 @@ This library is implementation of
 the [Context protocol](https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md) for
 Stencil.
 
-Implementation is based on the [Lit context protocol](https://github.com/lit/lit/tree/main/packages/context), where
-portions of codes are copied and modified to work with Stencil, or reused as is.
-
-License from the Lit context protocol is included in this repository, make sure it is compliant with your project
-license (see original [LICENSE](https://github.com/lit/lit/blob/main/packages/context/LICENSE)).
+Implementation is based on the [Lit context protocol](https://github.com/lit/lit/tree/main/packages/context), where some
+of the portions of codes are copied and modified to work with Stencil.
 
 ## What is this for?
 
@@ -29,7 +26,7 @@ can consume context value from any ancestor which provides required dependency.
 ## Installation
 
 ```bash
-npm install @runopencode/context-protocol
+    npm install @stencil-community/context
 ```
 
 ## Initialization
@@ -56,7 +53,7 @@ Example:
 
 ```ts
 // file: src/global.ts
-import { createContextRoot } from '@runopencode/stencil-context';
+import { createContextRoot } from '@stencil-community/context';
 
 export default function initialize(): void {
     createContextRoot();
@@ -101,7 +98,7 @@ For consumer, two options are provided:
 
 ```tsx
 import { Component, ComponentInterface, FunctionalComponent, h } from '@stencil/core';
-import { Provide, Consume } from '@runopencode/stencil-context';
+import { Provide, Consume } from '@stencil-community/context';
 
 export class Logger {
     public log(value: string): void {
@@ -173,7 +170,8 @@ There are several utility functions which you may use to provide context values 
 
 ## TODO
 
-- [ ] Test suite for context protocol implementation.
+- [ ] Discussion: Should context root stop propagation of context events? Should that be a flag?
+- [ ] Discussion: Should global context root be created automatically when first provider or consumer is initialized?
 
 ## Thanks
 
@@ -181,6 +179,10 @@ There are several utility functions which you may use to provide context values 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. Lit license is included in
-this repository, make sure it is compliant with your project license (see
-original [LICENSE](https://github.com/lit/lit/blob/main/LICENSE)).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+- Removed `@lit/context` as dependency, as it is not needed anymore. Source code diverged too much from Lit
+  implementation, only events and some of the types are unchanged and those are defined by the context protocol
+  specification.

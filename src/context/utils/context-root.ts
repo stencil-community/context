@@ -1,9 +1,9 @@
 import {
     Context,
     ContextCallback,
-    ContextEvent as ContextConsumerEvent,
-}                               from '@lit/context';
-import { ContextProviderEvent } from '../controllers/context-provider';
+    ContextRequestEvent,
+    ContextProviderEvent,
+} from '../context';
 
 export class ContextRoot {
 
@@ -17,28 +17,28 @@ export class ContextRoot {
     public static create(root: HTMLElement): ContextRoot {
         return new ContextRoot(root);
     }
-    
+
     public destroy(): void {
         this._pending.clear();
         this._root.removeEventListener('context-request', this._onContextRequest);
         this._root.removeEventListener('context-provider', this._onContextProvider);
     }
 
-    private _onContextRequest: OnContextRequestFn = (event: ContextConsumerEvent<Context<unknown, unknown>>): void => {
+    private _onContextRequest: OnContextRequestFn = (event: ContextRequestEvent<Context<unknown, unknown>>): void => {
         let element: HTMLElement = (event.contextTarget ?? event.composedPath()[0]) as HTMLElement;
 
         // This is already tracked.
         if (this._pending.has(event.context, element, event.callback)) {
             return;
         }
-        
+
         this._pending.set(event.context, element, event.callback, event.subscribe || false);
     }
 
     private _onContextProvider: OnContextProviderFn = (event: ContextProviderEvent<Context<unknown, unknown>>): void => {
         for (let {element, callback, subscribe} of this._pending.iterate(event.context)) {
             element.dispatchEvent(
-                new ContextConsumerEvent(
+                new ContextRequestEvent(
                     event.context,
                     element,
                     callback,
@@ -50,7 +50,7 @@ export class ContextRoot {
 }
 
 
-type OnContextRequestFn = (event: ContextConsumerEvent<Context<unknown, unknown>>) => void;
+type OnContextRequestFn = (event: ContextRequestEvent<Context<unknown, unknown>>) => void;
 type OnContextProviderFn = (event: ContextProviderEvent<Context<unknown, unknown>>) => void;
 
 type RequestsLedger = {
@@ -99,15 +99,15 @@ class PendingRequests {
         (ledger.callbacks.get(element) as WeakSet<ContextCallback<unknown>>).add(callback);
 
         ledger.requests.push({
-            elementRef: new WeakRef<HTMLElement>(element),
+            elementRef:  new WeakRef<HTMLElement>(element),
             callbackRef: new WeakRef<ContextCallback<unknown>>(callback),
-            subscribe: subscribe
+            subscribe:   subscribe,
         })
 
         this._pending.set(context, ledger);
     }
 
-    public *iterate(context: Context<unknown, unknown>): IterableIterator<any> {
+    public* iterate(context: Context<unknown, unknown>): IterableIterator<any> {
         let ledger: RequestsLedger | null = this._pending.get(context) || null;
 
         if (null === ledger) {
@@ -117,14 +117,14 @@ class PendingRequests {
         this._pending.delete(context);
 
         for (let {elementRef, callbackRef, subscribe} of ledger.requests) {
-            let element: HTMLElement | null = elementRef.deref() || null;
+            let element: HTMLElement | null               = elementRef.deref() || null;
             let callback: ContextCallback<unknown> | null = callbackRef.deref() || null;
 
             if (element === null || callback === null) {
                 continue;
             }
 
-            yield { element, callback, subscribe };
+            yield {element, callback, subscribe};
         }
     }
 

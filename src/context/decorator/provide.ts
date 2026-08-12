@@ -1,7 +1,7 @@
 import {
     Context,
     createContext,
-}                           from '@lit/context';
+}                           from '../context';
 import {
     ComponentInterface,
     getElement,
@@ -44,7 +44,7 @@ export function Provide<ValueType>(context: Context<unknown, ValueType> | string
                     initialValue: this[property],
                 }));
             }
-            
+
             provider.get(this)?.hostConnected();
 
             if (connectedCallback) {

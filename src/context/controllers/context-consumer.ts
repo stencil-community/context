@@ -1,9 +1,9 @@
 import {
     ContextCallback,
-    ContextEvent,
+    ContextRequestEvent,
     Context,
     ContextType,
-} from '@lit/context';
+} from '../context';
 
 export type ContextConsumerCallbackFn<C extends Context<unknown, unknown>> = (value: ContextType<C>, dispose?: () => void) => void;
 
@@ -48,7 +48,7 @@ export class ContextConsumer<C extends Context<unknown, unknown>> {
      */
     public hostConnected(): void {
         this._host.dispatchEvent(
-            new ContextEvent(
+            new ContextRequestEvent(
                 this._context,
                 this._host,
                 this._provide,

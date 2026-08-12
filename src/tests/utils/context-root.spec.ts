@@ -1,17 +1,17 @@
 import {
     Context,
-    ContextEvent as ContextConsumerEvent,
+    ContextRequestEvent,
     createContext,
-}                               from '@lit/context';
-import { createDocument }       from '@stencil/mock-doc';
-import { beforeEach }           from '@stencil/vitest';
+    ContextProviderEvent,
+    ContextRoot,
+}                         from '../../';
+import { createDocument } from '@stencil/mock-doc';
+import { beforeEach }     from '@stencil/vitest';
 import {
     test,
     expect,
     describe,
-}                               from 'vitest';
-import { ContextProviderEvent } from '../../context/controllers/context-provider';
-import { ContextRoot }          from '../../context/utils/context-root';
+}                         from 'vitest';
 
 describe('ContextRoot', (): void => {
 
@@ -41,7 +41,7 @@ describe('ContextRoot', (): void => {
 
         test('It will provide context to consumer as soon provider is registered.', (): void => {
 
-            consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
+            consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (): void => {
                 // noop.
             }, true));
 
@@ -54,18 +54,18 @@ describe('ContextRoot', (): void => {
             provider.dispatchEvent(new ContextProviderEvent(context, provider))
 
             expect(provided.length).toStrictEqual(1);
-            expect(provided[0]).toBeInstanceOf(ContextConsumerEvent);
+            expect(provided[0]).toBeInstanceOf(ContextRequestEvent);
             expect(provided[0].target).toStrictEqual(consumer);
-            expect((provided[0] as ContextConsumerEvent<Context<unknown, unknown>>).context).toStrictEqual(context);
-            expect((provided[0] as ContextConsumerEvent<Context<unknown, unknown>>).subscribe).toStrictEqual(true);
+            expect((provided[0] as ContextRequestEvent<Context<unknown, unknown>>).context).toStrictEqual(context);
+            expect((provided[0] as ContextRequestEvent<Context<unknown, unknown>>).subscribe).toStrictEqual(true);
         });
 
         test('It will provide context to consumer only once for same context and callback resolving first unsettled request', (): void => {
             let callback: () => void = (): void => {
             };
 
-            consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, callback, false));
-            consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, callback, true));
+            consumer.dispatchEvent(new ContextRequestEvent(context, consumer, callback, false));
+            consumer.dispatchEvent(new ContextRequestEvent(context, consumer, callback, true));
 
             provider.addEventListener('context-request', (event: Event): void => {
                 provided.push(event);
@@ -74,16 +74,16 @@ describe('ContextRoot', (): void => {
             provider.dispatchEvent(new ContextProviderEvent(context, provider))
 
             expect(provided.length).toStrictEqual(1);
-            expect(provided[0]).toBeInstanceOf(ContextConsumerEvent);
+            expect(provided[0]).toBeInstanceOf(ContextRequestEvent);
             expect(provided[0].target).toStrictEqual(consumer);
-            expect((provided[0] as ContextConsumerEvent<Context<unknown, unknown>>).context).toStrictEqual(context);
-            expect((provided[0] as ContextConsumerEvent<Context<unknown, unknown>>).subscribe).toStrictEqual(false);
+            expect((provided[0] as ContextRequestEvent<Context<unknown, unknown>>).context).toStrictEqual(context);
+            expect((provided[0] as ContextRequestEvent<Context<unknown, unknown>>).subscribe).toStrictEqual(false);
         });
 
         test('It will provide context to consumer for each callback', (): void => {
-            consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
+            consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (): void => {
             }, false));
-            consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
+            consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (): void => {
             }, true));
 
             provider.addEventListener('context-request', (event: Event): void => {
@@ -114,7 +114,7 @@ describe('ContextRoot', (): void => {
 
             ContextRoot.create(root);
 
-            consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
+            consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (): void => {
                 // noop.
             }, true));
 
@@ -142,7 +142,7 @@ describe('ContextRoot', (): void => {
 
             ContextRoot.create(root);
 
-            consumer.dispatchEvent(new ContextConsumerEvent(createContext('foo'), consumer, (): void => {
+            consumer.dispatchEvent(new ContextRequestEvent(createContext('foo'), consumer, (): void => {
                 // noop.
             }, true));
 
@@ -170,7 +170,7 @@ describe('ContextRoot', (): void => {
             let context: Context<'foo', string> = createContext('foo');
             let contextRoot: ContextRoot        = ContextRoot.create(root);
 
-            consumer.dispatchEvent(new ContextConsumerEvent(context, consumer, (): void => {
+            consumer.dispatchEvent(new ContextRequestEvent(context, consumer, (): void => {
                 // noop.
             }, true));
 

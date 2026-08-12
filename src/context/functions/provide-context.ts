@@ -1,7 +1,7 @@
 import {
     Context,
     createContext,
-}                          from '@lit/context';
+}                          from '../context';
 import { ContextProvider } from '../controllers/context-provider';
 import { findElement }     from './internal';
 

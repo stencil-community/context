@@ -1,21 +1,20 @@
 import {
     Context,
     createContext,
-}                         from '@lit/context';
+    ContextConsumer,
+    provideContext,
+}                         from '../../';
 import { createDocument } from '@stencil/mock-doc';
 import {
     afterEach,
     beforeEach,
     expect,
     vi,
-} from '@stencil/vitest';
+}                         from '@stencil/vitest';
 import {
     describe,
     test,
 }                         from 'vitest';
-import { ContextConsumer } from '../../context/controllers/context-consumer';
-
-import { provideContext } from '../../context/functions/provide-context';
 
 describe('ContextConsumer', (): void => {
 
@@ -25,14 +24,14 @@ describe('ContextConsumer', (): void => {
     let collected: string[];
 
     beforeEach((): void => {
-        document = createDocument(`
-            <div id="provider">
-                <div id="consumer"></div>
+        document  = createDocument(`
+            <div id='provider'>
+                <div id='consumer'></div>
             </div>
                
         `);
-        context  = createContext('foo');
-        consumer = document.querySelector('#consumer') as HTMLElement;
+        context   = createContext('foo');
+        consumer  = document.querySelector('#consumer') as HTMLElement;
         collected = [];
 
         vi.stubGlobal('document', document);
@@ -44,19 +43,19 @@ describe('ContextConsumer', (): void => {
 
     test('It will consume context once.', (): void => {
         provideContext(context, 'bar');
-        
+
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {
-            context: context,
-            callback: (value: string): void => {
+            context:   context,
+            callback:  (value: string): void => {
                 collected.push(value);
             },
             subscribe: false,
         });
-        
+
         expect(collected.length).toStrictEqual(0);
-        
+
         controller.hostConnected();
-        
+
         expect(collected).toStrictEqual(['bar']);
         expect(controller.value).toStrictEqual('bar');
 
@@ -70,8 +69,8 @@ describe('ContextConsumer', (): void => {
         provideContext(context, 'bar');
 
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {
-            context: context,
-            callback: (value: string): void => {
+            context:   context,
+            callback:  (value: string): void => {
                 collected.push(value);
             },
             subscribe: true,
@@ -94,8 +93,8 @@ describe('ContextConsumer', (): void => {
         provideContext(context, 'bar');
 
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {
-            context: context,
-            callback: (value: string): void => {
+            context:   context,
+            callback:  (value: string): void => {
                 collected.push(value);
             },
             subscribe: true,
@@ -109,7 +108,7 @@ describe('ContextConsumer', (): void => {
         expect(controller.value).toStrictEqual('bar');
 
         controller.hostDisconnected();
-        
+
         provideContext(context, 'baz');
 
         expect(collected).toStrictEqual(['bar']);
@@ -120,8 +119,8 @@ describe('ContextConsumer', (): void => {
         provideContext(context, 'bar');
 
         let controller: ContextConsumer<Context<'foo', string>> = new ContextConsumer(consumer, {
-            context: context,
-            callback: (value: string): void => {
+            context:   context,
+            callback:  (value: string): void => {
                 collected.push(value);
             },
             subscribe: true,
@@ -139,5 +138,5 @@ describe('ContextConsumer', (): void => {
         expect(collected).toStrictEqual(['bar', 'baz']);
         expect(controller.value).toStrictEqual('baz');
     });
-    
+
 });

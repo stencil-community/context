@@ -1,21 +1,21 @@
 import {
     Context,
-    ContextEvent as ContextRequestEvent,
+    ContextRequestEvent,
     createContext,
-}                          from '@lit/context';
-import { createDocument }  from '@stencil/mock-doc';
+    ContextProvider,
+    consumeContext,
+}                         from '../../';
+import { createDocument } from '@stencil/mock-doc';
 import {
     afterEach,
     beforeEach,
     expect,
     vi,
-}                          from '@stencil/vitest';
+}                         from '@stencil/vitest';
 import {
     describe,
     test,
-}                          from 'vitest';
-import { ContextProvider } from '../../context/controllers/context-provider';
-import { consumeContext }  from '../../context/functions/consume-context';
+}                         from 'vitest';
 
 describe('ContextProvider', (): void => {
 

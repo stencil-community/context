@@ -6,7 +6,7 @@ import { ContextConsumer }  from '../controllers/context-consumer';
 import {
     Context,
     createContext,
-}                           from '@lit/context';
+}                           from '../context';
 import { Deferred }         from '../utils/deferred';
 import { ConsumeDecorator } from './types';
 

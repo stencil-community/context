@@ -6,7 +6,7 @@ import {
     ComponentInterface,
     Method,
 }                  from '@stencil/core';
-import { Consume } from '../../context/decorator/consume';
+import { Consume } from '../../';
 import {
     ErrorLogger,
     DebugLogger,

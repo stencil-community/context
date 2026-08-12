@@ -8,6 +8,9 @@ export const config: Config = {
             esmLoaderPath: '../loader',
         },
         {
+            type: 'dist-custom-elements',
+        },
+        {
             type:          'www',
             serviceWorker: null,
         },

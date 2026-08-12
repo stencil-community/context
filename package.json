@@ -1,7 +1,7 @@
 {
-    "name": "@runopencode/stencil-context",
+    "name": "@stencil-community/context",
     "type": "module",
-    "version": "0.7.0",
+    "version": "1.0.0",
     "description": "Implementation of Context Protocol for Stencil.",
     "main": "dist/index.cjs.js",
     "module": "dist/index.js",
@@ -13,7 +13,7 @@
     "unpkg": "dist/stencil-context/stencil-context.esm.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/runopencode/stencil-context.git"
+        "url": "https://github.com/stencil-community/context"
     },
     "files": [
         "dist/",
@@ -22,10 +22,8 @@
     "scripts": {
         "build": "stencil build --docs",
         "start": "stencil build --dev --watch --serve",
-        "test": "stencil-test --coverage" ,
-        "test:watch": "stencil-test --watch",
-        "test:e2e": "stencil-test --project browser",
-        "test:spec": "stencil-test --project spec"
+        "test": "stencil-test --coverage",
+        "test:watch": "stencil-test --watch"
     },
     "dependencies": {
         "@stencil/core": "^4.0"

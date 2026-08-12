@@ -8,16 +8,11 @@ export const config: Config = {
             esmLoaderPath: '../loader',
         },
         {
-            type: 'dist-custom-elements',
-        },
-        {
-            type: 'docs-readme',
-        },
-        {
             type:          'www',
-            serviceWorker: null, // disable service workers
+            serviceWorker: null,
         },
     ],
     globalScript:      'src/global.ts',
-    excludeComponents: ['consume-example', 'provide-example'],
+    excludeComponents: ['consume-example', 'provide-example', 'app-example'],
+    buildDist:         true,
 };
